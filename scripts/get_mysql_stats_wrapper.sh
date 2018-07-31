@@ -32,7 +32,7 @@ elif [ "$ITEM" = "mysqld_alive" ]; then
 elif [ -e $CACHEFILE ]; then
     # Check and run the script
     #TIMEFLM=`stat -c %Y /tmp/$SERVICEHOST-$SERVICEPORT-mysql_zabbix_stats.txt`
-	  TIMEFLM=`stat -c %Y $CACHEFILE`
+    TIMEFLM=`stat -c %Y $CACHEFILE`
     TIMENOW=`date +%s`
     if [ `expr $TIMENOW - $TIMEFLM` -gt 300 ]; then
         rm -f $CACHEFILE
