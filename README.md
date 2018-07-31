@@ -1,1 +1,1 @@
-# zabbix-mysql-multi-Template and Scripts
+# zabbix-mysql-multi Template and Scripts
