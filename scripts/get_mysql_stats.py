@@ -55,19 +55,54 @@ def to_float(rownum):
     return float(rownum[0])
     
 def to_int(rownum):
-    rownum = re.findall('[\d+\.\d]*',rownum)
+    rownum = re.findall('[-+?\d+\.\d]*',rownum)
     return int(float(rownum[0]))
 
 def get_resaultdic():
     txn_seen=False
     prev_line=''
-    resaults=get_mysql_status(SERVICENAME,SERVICEPORT,'show global status;')
     resaultdic={}
+ 
+    resaults=get_mysql_status(SERVICENAME,SERVICEPORT,'show slave status;')
+    # Scale slave_running and slave_stopped relative to the slave lag.
+    for resault in resaults:
+        if(resault[0]=='Slave_IO_Running' and resault[1]=='Yes'):
+            resaultdic[u'Slave_IO_Running']=1
+        else:
+            resaultdic[u'Slave_IO_Running']=0
+        
+        if(resault[0]=='Slave_SQL_Running' and resault[1]=='Yes'):
+            resaultdic[u'Slave_SQL_Running']=1
+        else:
+            resaultdic[u'Slave_SQL_Running']=0
+        
+        if (resault[0]=='Seconds_Behind_Master' and resaultdic[u'Slave_IO_Running']==1 and resaultdic[u'Slave_SQL_Running']==1):
+            resaultdic[u'slave_lag']=resault[1]
+        else:
+            resaultdic[u'slave_lag']=-1
+
+    resaults=get_mysql_status(SERVICENAME,SERVICEPORT,'show variables;')
+    for resault in resaults:
+        if(resault[0]=='max_connections'):
+            resaultdic[u'max_connections']=resault[1]    
+        if(resault[0]=='innodb_log_buffer_size'):
+            resaultdic[u'innodb_log_buffer_size']=resault[1]
+        if(resault[0]=='key_buffer_size'):
+            resaultdic[u'key_buffer_size']=resault[1]            
+        if(resault[0]=='key_cache_block_size'):
+            resaultdic[u'key_cache_block_size']=resault[1]    
+        if(resault[0]=='query_cache_size'):
+            resaultdic[u'query_cache_size']=resault[1] 
+        if(resault[0]=='table_open_cache'):
+            resaultdic[u'table_open_cache']=resault[1]  
+        if(resault[0]=='thread_cache_size'):
+            resaultdic[u'thread_cache_size']=resault[1] 
+                            
+    resaults=get_mysql_status(SERVICENAME,SERVICEPORT,'show global status;')
     for resault in resaults:
         if ( is_number(resault[1])):
-            if(not resault[0].find("oneagent")==0):
-                resaultdic[resault[0]]=to_int(resault[1])
-
+            resaultdic[resault[0]]=to_int(resault[1])
+    
     resaults2=get_mysql_status(SERVICENAME,SERVICEPORT,'show engine innodb status;')
     lines=resaults2[0][2].split("\n")
     for line in lines:
@@ -232,7 +267,7 @@ def get_resaultdic():
             resaultdic[u'additional_pool_alloc']=to_int(row[8])
         elif(line.find("Adaptive hash index ")==0):
             #   Adaptive hash index 1538240664     (186998824 + 1351241840)
-            resaultdic[u'total_mem_alloc']=to_int(row[3])
+            resaultdic[u'adaptive_hash_memory']=to_int(row[3])
         elif(line.find("Page hash           ")==0):
             #   Page hash           11688584
             resaultdic[u'page_hash_memory']=to_int(row[2])
@@ -253,7 +288,18 @@ def get_resaultdic():
             resaultdic[u'thread_hash_memory']=to_int(row[1])  
         elif(line.find("innodb_io_pattern   ")==0):
             #   innodb_io_pattern   0     (0 + 0)
-            resaultdic[u'innodb_io_pattern_memory']=to_int(row[1])  
+            resaultdic[u'innodb_io_pattern_memory']=to_int(row[1])
+        elif(line.find(" queries inside InnoDB, ")>0):
+            # 0 queries inside InnoDB, 0 queries in queue
+            resaultdic[u'queries_inside']=to_int(row[0])
+            resaultdic[u'queries_queued']=to_int(row[4])
+        prev_line = line
+    
+    resaultdic[u'unflushed_log']=resaultdic[u'log_bytes_written']+resaultdic[u'log_bytes_flushed']
+    resaultdic[u'uncheckpointed_bytes']=resaultdic[u'log_bytes_written']+resaultdic[u'last_checkpoint']
+    
+    return resaultdic
+    """
         elif(line.find("Buffer pool size   ")==0):
             # The " " after size is necessary to avoid matching the wrong line:
             # Buffer pool size        1769471
@@ -291,20 +337,12 @@ def get_resaultdic():
             resaultdic[u'rows_updated']=to_int(row[6])
             resaultdic[u'rows_deleted']=to_int(row[8])
             resaultdic[u'rows_read']=to_int(row[10])
-        elif(line.find(" queries inside InnoDB, ")>0):
-            # 0 queries inside InnoDB, 0 queries in queue
-            resaultdic[u'queries_inside']=to_int(row[0])
-            resaultdic[u'queries_queued']=to_int(row[4])
-        prev_line = line
-    
-    resaultdic[u'unflushed_log']=resaultdic[u'log_bytes_written']+resaultdic[u'log_bytes_flushed']
-    resaultdic[u'uncheckpointed_bytes']=resaultdic[u'log_bytes_written']+resaultdic[u'last_checkpoint']
-    return resaultdic
+    """
 
 def writetofile(resaultdic):
     f1 = open('D:/'+SERVICENAME+'-'+str(SERVICEPORT)+'-status.txt', 'w')
     for key in resaultdic.keys():
-        f1.writelines( key +':'+ str(resaultdic[key])+'\n')
+        f1.writelines( ' '+key +':'+ str(resaultdic[key])+'\n')
     
  
 def main():
