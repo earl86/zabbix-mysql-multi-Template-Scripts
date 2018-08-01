@@ -351,7 +351,7 @@ def get_resaultdic():
     """
 
 def writetofile(resaultdic):
-    f1 = open('D:/'+SERVICEHOST+'-'+str(SERVICEPORT)+'-status.txt', 'w')
+    f1 = open('/tmp/'+SERVICEHOST+'-'+str(SERVICEPORT)+'-mysql_zabbix_stats.txt', 'w')
     for key in resaultdic.keys():
         f1.writelines( ' '+key +':'+ str(resaultdic[key])+'\n')
     
