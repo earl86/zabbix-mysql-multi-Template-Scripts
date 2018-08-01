@@ -4,16 +4,27 @@
 import MySQLdb
 import os
 import re
-
-USERNAME='zabbix'
-PASSWORD='zabbix'
-SERVICENAME='192.168.56.105'
-SERVICEPORT=3306
+import argparse
 
 
-def get_mysql_status(SERVICENAME,SERVICEPORT,querysql):
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--servicehost", action="store", dest='servicehost', help="input the database servcie host", required=True)
+parser.add_argument("--serviceport", action="store", dest='serviceport', type=int, help="input the database service port", required=True)
+parser.add_argument("--username", action="store", dest='username', help="input the monitor user name for database", required=True)
+parser.add_argument("--password", action="store", dest='password', help="input the user's password", required=True)
+args = parser.parse_args()
+
+
+SERVICEHOST=args.servicehost
+SERVICEPORT=args.serviceport
+USERNAME=args.username
+PASSWORD=args.password
+
+
+def get_mysql_status(SERVICEHOST,SERVICEPORT,querysql):
     try:
-        conn = MySQLdb.connect(host=SERVICENAME, port=SERVICEPORT, user=USERNAME, passwd=PASSWORD,db='',charset="utf8")
+        conn = MySQLdb.connect(host=SERVICEHOST, port=SERVICEPORT, user=USERNAME, passwd=PASSWORD,db='',charset="utf8")
     except Exception, e:
         print e
         os._exit()
@@ -63,7 +74,7 @@ def get_resaultdic():
     prev_line=''
     resaultdic={}
  
-    resaults=get_mysql_status(SERVICENAME,SERVICEPORT,'show slave status;')
+    resaults=get_mysql_status(SERVICEHOST,SERVICEPORT,'show slave status;')
     # Scale slave_running and slave_stopped relative to the slave lag.
     for resault in resaults:
         if(resault[0]=='Slave_IO_Running' and resault[1]=='Yes'):
@@ -81,7 +92,7 @@ def get_resaultdic():
         else:
             resaultdic[u'slave_lag']=-1
 
-    resaults=get_mysql_status(SERVICENAME,SERVICEPORT,'show variables;')
+    resaults=get_mysql_status(SERVICEHOST,SERVICEPORT,'show variables;')
     for resault in resaults:
         if(resault[0]=='max_connections'):
             resaultdic[u'max_connections']=resault[1]    
@@ -98,12 +109,12 @@ def get_resaultdic():
         if(resault[0]=='thread_cache_size'):
             resaultdic[u'thread_cache_size']=resault[1] 
                             
-    resaults=get_mysql_status(SERVICENAME,SERVICEPORT,'show global status;')
+    resaults=get_mysql_status(SERVICEHOST,SERVICEPORT,'show global status;')
     for resault in resaults:
         if ( is_number(resault[1])):
             resaultdic[resault[0]]=to_int(resault[1])
     
-    resaults2=get_mysql_status(SERVICENAME,SERVICEPORT,'show engine innodb status;')
+    resaults2=get_mysql_status(SERVICEHOST,SERVICEPORT,'show engine innodb status;')
     lines=resaults2[0][2].split("\n")
     for line in lines:
         line=line.strip()
@@ -340,7 +351,7 @@ def get_resaultdic():
     """
 
 def writetofile(resaultdic):
-    f1 = open('D:/'+SERVICENAME+'-'+str(SERVICEPORT)+'-status.txt', 'w')
+    f1 = open('D:/'+SERVICEHOST+'-'+str(SERVICEPORT)+'-status.txt', 'w')
     for key in resaultdic.keys():
         f1.writelines( ' '+key +':'+ str(resaultdic[key])+'\n')
     
