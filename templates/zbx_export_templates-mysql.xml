@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2018-08-01T05:22:31Z</date>
+    <date>2018-08-02T03:23:11Z</date>
     <groups>
         <group>
             <name>MySQL Templates</name>
