@@ -12,7 +12,7 @@ ITEM=$3
 
 DIR=`dirname $0`
 
-CMD="/usr/bin/python $DIR/get_mysql_stats.py --servicehost $SERVICEHOST --serviceport $SERVICEPORT --username $USERNAME--password $PASSWORD"
+CMD="/usr/bin/python $DIR/get_mysql_stats.py --servicehost $SERVICEHOST --serviceport $SERVICEPORT --username $USERNAME --password $PASSWORD"
 CACHEFILE="/tmp/$SERVICEHOST-$SERVICEPORT-mysql_zabbix_stats.txt"
 
 if [ "$ITEM" = "mysqld_alive" ]; then
