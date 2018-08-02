@@ -47,7 +47,7 @@ fi
 
 # Parse cache file
 if [ -e $CACHEFILE ]; then
-    cat $CACHEFILE | grep ' $ITEM:' | awk -F: '{print $2}'
+    cat $CACHEFILE | grep " $ITEM:"| awk -F: '{print $2}'
 else
     echo "ERROR: run the command manually to investigate the problem: $CMD"
 fi
