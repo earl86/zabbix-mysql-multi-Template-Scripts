@@ -38,6 +38,22 @@ def get_mysql_status(SERVICEHOST,SERVICEPORT,querysql):
     cursor.close()
     conn.close()
 
+def get_mysql_status_dic(SERVICEHOST,SERVICEPORT,querysql):
+    try:
+        conn = MySQLdb.connect(host=SERVICEHOST, port=SERVICEPORT, user=USERNAME, passwd=PASSWORD,db='',charset="utf8")
+    except Exception, e:
+        print e
+        os._exit()
+    try:
+        cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(querysql)
+        result = cursor.fetchall()
+        return result
+    except Exception, e:
+        print e
+    cursor.close()
+    conn.close()
+
 def is_number(s):
     try:
         float(s)
@@ -74,39 +90,42 @@ def get_resaultdic():
     prev_line=''
     resaultdic={}
  
-    resaults=get_mysql_status(SERVICEHOST,SERVICEPORT,'show slave status;')
+    resaults=get_mysql_status_dic(SERVICEHOST,SERVICEPORT,'show slave status;')
     # Scale slave_running and slave_stopped relative to the slave lag.
     for resault in resaults:
-        if(resault[0]=='Slave_IO_Running' and resault[1]=='Yes'):
+        resaultdic[u'Master_Log_File']=to_int(resault[u'Master_Log_File'].split(".")[1])
+        resaultdic[u'Relay_Master_Log_File']=to_int(resault[u'Relay_Master_Log_File'].split(".")[1])
+        if(resault[u'Slave_IO_Running']=='Yes'):
             resaultdic[u'Slave_IO_Running']=1
         else:
             resaultdic[u'Slave_IO_Running']=0
-        
-        if(resault[0]=='Slave_SQL_Running' and resault[1]=='Yes'):
+            
+        if(resault[u'Slave_SQL_Running']=='Yes'):
             resaultdic[u'Slave_SQL_Running']=1
         else:
             resaultdic[u'Slave_SQL_Running']=0
+
+        resaultdic[u'Read_Master_Log_Pos']=resault[u'Read_Master_Log_Pos']
+        resaultdic[u'Exec_Master_Log_Pos']=resault[u'Exec_Master_Log_Pos']
+        resaultdic[u'Seconds_Behind_Master']=resault[u'Seconds_Behind_Master']
+        resaultdic[u'slave_lag_binlog']=resaultdic[u'Master_Log_File']-resaultdic[u'Relay_Master_Log_File']
         
-        if (resault[0]=='Seconds_Behind_Master' and resaultdic[u'Slave_IO_Running']==1 and resaultdic[u'Slave_SQL_Running']==1):
-            resaultdic[u'slave_lag']=resault[1]
-        else:
-            resaultdic[u'slave_lag']=-1
 
     resaults=get_mysql_status(SERVICEHOST,SERVICEPORT,'show variables;')
     for resault in resaults:
         if(resault[0]=='max_connections'):
             resaultdic[u'max_connections']=resault[1]    
-        if(resault[0]=='innodb_log_buffer_size'):
+        elif(resault[0]=='innodb_log_buffer_size'):
             resaultdic[u'innodb_log_buffer_size']=resault[1]
-        if(resault[0]=='key_buffer_size'):
+        elif(resault[0]=='key_buffer_size'):
             resaultdic[u'key_buffer_size']=resault[1]            
-        if(resault[0]=='key_cache_block_size'):
+        elif(resault[0]=='key_cache_block_size'):
             resaultdic[u'key_cache_block_size']=resault[1]    
-        if(resault[0]=='query_cache_size'):
+        elif(resault[0]=='query_cache_size'):
             resaultdic[u'query_cache_size']=resault[1] 
-        if(resault[0]=='table_open_cache'):
+        elif(resault[0]=='table_open_cache'):
             resaultdic[u'table_open_cache']=resault[1]  
-        if(resault[0]=='thread_cache_size'):
+        elif(resault[0]=='thread_cache_size'):
             resaultdic[u'thread_cache_size']=resault[1] 
                             
     resaults=get_mysql_status(SERVICEHOST,SERVICEPORT,'show global status;')
@@ -351,7 +370,7 @@ def get_resaultdic():
     """
 
 def writetofile(resaultdic):
-    f1 = open('/tmp/'+SERVICEHOST+'-'+str(SERVICEPORT)+'-mysql_zabbix_stats.txt', 'w')
+    f1 = open('D:/'+SERVICEHOST+'-'+str(SERVICEPORT)+'-mysql_zabbix_stats.txt', 'w')
     for key in resaultdic.keys():
         f1.writelines( ' '+key +':'+ str(resaultdic[key])+'\n')
     
