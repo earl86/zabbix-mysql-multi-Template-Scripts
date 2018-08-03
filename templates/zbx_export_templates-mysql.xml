@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2018-08-03T03:33:19Z</date>
+    <date>2018-08-03T05:34:17Z</date>
     <groups>
         <group>
             <name>MySQL Templates</name>
@@ -20,6 +20,9 @@
             <applications>
                 <application>
                     <name>Engine InnoDB Status</name>
+                </application>
+                <application>
+                    <name>Engine InnoDB Status MariaDB</name>
                 </application>
                 <application>
                     <name>Global Status</name>
@@ -169,7 +172,7 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>Adaptive Hash Memory</name>
+                    <name>Adaptive hash index</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
@@ -180,7 +183,7 @@
                     <status>0</status>
                     <value_type>0</value_type>
                     <allowed_hosts/>
-                    <units>B</units>
+                    <units/>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -196,11 +199,11 @@
                     <publickey/>
                     <privatekey/>
                     <port/>
-                    <description>MySQL Adaptive Hash Memory</description>
+                    <description>MySQL Hash Index Cells Total</description>
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>Engine InnoDB Status</name>
+                            <name>Engine InnoDB Status MariaDB</name>
                         </application>
                     </applications>
                     <valuemap/>
@@ -1247,7 +1250,7 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>Engine InnoDB Status</name>
+                            <name>Engine InnoDB Status MariaDB</name>
                         </application>
                     </applications>
                     <valuemap/>
@@ -1334,7 +1337,7 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>Engine InnoDB Status</name>
+                            <name>Engine InnoDB Status MariaDB</name>
                         </application>
                     </applications>
                     <valuemap/>
@@ -1988,48 +1991,7 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>Hash Index Cells Total</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},hash_index_cells_total]</key>
-                    <delay>300</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description>MySQL Hash Index Cells Total</description>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>Engine InnoDB Status</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>Hash Index Cells Used</name>
+                    <name>Adaptive Hash Index Cells Used</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
@@ -2057,6 +2019,88 @@
                     <privatekey/>
                     <port/>
                     <description>MySQL Hash Index Cells Used</description>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Engine InnoDB Status</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing/>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
+                    <name>Adaptive Hash Table Memory</name>
+                    <type>0</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},hash_table_memony]</key>
+                    <delay>300</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <units>B</units>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description>MySQL Adaptive Hash Memory</description>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Engine InnoDB Status</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing/>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
+                    <name>Adaptive Hash Table Size</name>
+                    <type>0</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},hash_table_size]</key>
+                    <delay>300</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description>MySQL Hash Index Cells Total</description>
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
@@ -3905,7 +3949,7 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>Engine InnoDB Status</name>
+                            <name>Engine InnoDB Status MariaDB</name>
                         </application>
                     </applications>
                     <valuemap/>
@@ -4473,7 +4517,7 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>Engine InnoDB Status</name>
+                            <name>Engine InnoDB Status MariaDB</name>
                         </application>
                     </applications>
                     <valuemap/>
@@ -5405,7 +5449,7 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>Engine InnoDB Status</name>
+                            <name>Engine InnoDB Status MariaDB</name>
                         </application>
                     </applications>
                     <valuemap/>
@@ -8426,7 +8470,7 @@
                     <type>0</type>
                     <item>
                         <host>MySQL Server Template Multi0925</host>
-                        <key>MySQL[{HOST.IP},{$MYSQL_PORT},hash_index_cells_total]</key>
+                        <key>MySQL[{HOST.IP},{$MYSQL_PORT},hash_table_size]</key>
                     </item>
                 </graph_item>
                 <graph_item>
@@ -9010,7 +9054,7 @@
                     <type>0</type>
                     <item>
                         <host>MySQL Server Template Multi0925</host>
-                        <key>MySQL[{HOST.IP},{$MYSQL_PORT},adaptive_hash_memory]</key>
+                        <key>MySQL[{HOST.IP},{$MYSQL_PORT},hash_table_memony]</key>
                     </item>
                 </graph_item>
                 <graph_item>
