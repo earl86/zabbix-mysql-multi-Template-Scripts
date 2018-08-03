@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2018-08-02T03:23:11Z</date>
+    <date>2018-08-03T03:33:19Z</date>
     <groups>
         <group>
             <name>MySQL Templates</name>
@@ -8000,6 +8000,47 @@
                     <master_item/>
                 </item>
                 <item>
+                    <name>Master Log File</name>
+                    <type>0</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},Master_Log_File]</key>
+                    <delay>300</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description>MySQL Slave Running</description>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Slave Status</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing/>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
                     <name>IO thread read position</name>
                     <type>0</type>
                     <snmp_community/>
@@ -8082,11 +8123,11 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>IO thread write position</name>
+                    <name>Relay Master Log File</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},Relay_Log_Pos]</key>
+                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},Relay_Master_Log_File]</key>
                     <delay>300</delay>
                     <history>90d</history>
                     <trends>365d</trends>
@@ -8110,47 +8151,6 @@
                     <privatekey/>
                     <port/>
                     <description>MySQL Slave Running</description>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>Slave Status</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>MySQL running slave</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},running_slave]</key>
-                    <delay>60</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description>MySQL running slave</description>
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
@@ -8205,11 +8205,11 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>Slave Lag</name>
+                    <name>Slave Lag Binlog</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},slave_lag]</key>
+                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},slave_lag_binlog]</key>
                     <delay>300</delay>
                     <history>90d</history>
                     <trends>365d</trends>
@@ -8246,221 +8246,11 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>Slave Open Temp Tables</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},Slave_open_temp_tables]</key>
-                    <delay>300</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description>MySQL Slave Open Temp Tables</description>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>Slave Status</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>Slave Retried Transactions</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},Slave_retried_transactions]</key>
-                    <delay>300</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description>MySQL Slave Retried Transactions</description>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>Slave Status</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing>
-                        <step>
-                            <type>10</type>
-                            <params/>
-                        </step>
-                    </preprocessing>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
                     <name>Slave Running</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
                     <key>MySQL[{HOST.IP},{$MYSQL_PORT},slave_running]</key>
-                    <delay>300</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description>MySQL Slave Running</description>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>Slave Status</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>Slave Stopped</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},slave_stopped]</key>
-                    <delay>300</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description>MySQL Slave Stopped</description>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>Slave Status</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>Sync Relay Log</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},sync_relay_log]</key>
-                    <delay>300</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>0</status>
-                    <value_type>0</value_type>
-                    <allowed_hosts/>
-                    <units/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description>MySQL Slave Running</description>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>Slave Status</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>Sync Relay Log Info</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>MySQL[{HOST.IP},{$MYSQL_PORT},sync_relay_log_info]</key>
                     <delay>300</delay>
                     <history>90d</history>
                     <trends>365d</trends>
