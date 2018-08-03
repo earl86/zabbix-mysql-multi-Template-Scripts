@@ -4,7 +4,7 @@
 import MySQLdb
 import os
 import re
-import argparse
+#import argparse
 
 
 parser = argparse.ArgumentParser()
@@ -114,21 +114,21 @@ def get_resaultdic():
     resaults=get_mysql_status(SERVICEHOST,SERVICEPORT,'show variables;')
     for resault in resaults:
         if(resault[0]=='max_connections'):
-            resaultdic[u'max_connections']=resault[1]    
+            resaultdic[u'max_connections']=to_int(resault[1])   
         elif(resault[0]=='innodb_log_buffer_size'):
-            resaultdic[u'innodb_log_buffer_size']=resault[1]
+            resaultdic[u'innodb_log_buffer_size']=to_int(resault[1])
         elif(resault[0]=='key_buffer_size'):
-            resaultdic[u'key_buffer_size']=resault[1]            
+            resaultdic[u'key_buffer_size']=to_int(resault[1])            
         elif(resault[0]=='key_cache_block_size'):
-            resaultdic[u'key_cache_block_size']=resault[1]
+            resaultdic[u'key_cache_block_size']=to_int(resault[1])
         elif(resault[0]=='innodb_page_size'):
-            resaultdic[u'innodb_page_size']=resault[1]
+            resaultdic[u'innodb_page_size']=to_int(resault[1])
         elif(resault[0]=='query_cache_size'):
-            resaultdic[u'query_cache_size']=resault[1] 
+            resaultdic[u'query_cache_size']=to_int(resault[1])
         elif(resault[0]=='table_open_cache'):
-            resaultdic[u'table_open_cache']=resault[1]  
+            resaultdic[u'table_open_cache']=to_int(resault[1])  
         elif(resault[0]=='thread_cache_size'):
-            resaultdic[u'thread_cache_size']=resault[1] 
+            resaultdic[u'thread_cache_size']=to_int(resault[1])
                             
     resaults=get_mysql_status(SERVICEHOST,SERVICEPORT,'show global status;')
     for resault in resaults:
@@ -251,7 +251,7 @@ def get_resaultdic():
             # In some versions of InnoDB, the used cells is omitted.
             # Hash table size 57374437, node heap has 72964 buffer(s) <-- no used cells
             resaultdic[u'hash_table_size']=to_int(row[3])
-            if(line.find("node heap has")>0):
+            if(line.find("node heap has")>0): 
                 resaultdic[u'hash_table_memony']=to_int(row[7])*resaultdic[u'innodb_page_size']                
             if(line.find("used cells")>0):
                 resaultdic[u'hash_index_cells_used']=to_int(row[6])
