@@ -7,7 +7,6 @@ import re
 import argparse
 
 
-
 parser = argparse.ArgumentParser()
 parser.add_argument("--servicehost", action="store", dest='servicehost', help="input the database servcie host", required=True)
 parser.add_argument("--serviceport", action="store", dest='serviceport', type=int, help="input the database service port", required=True)
@@ -20,6 +19,7 @@ SERVICEHOST=args.servicehost
 SERVICEPORT=args.serviceport
 USERNAME=args.username
 PASSWORD=args.password
+
 
 
 def get_mysql_status(SERVICEHOST,SERVICEPORT,querysql):
@@ -120,7 +120,9 @@ def get_resaultdic():
         elif(resault[0]=='key_buffer_size'):
             resaultdic[u'key_buffer_size']=resault[1]            
         elif(resault[0]=='key_cache_block_size'):
-            resaultdic[u'key_cache_block_size']=resault[1]    
+            resaultdic[u'key_cache_block_size']=resault[1]
+        elif(resault[0]=='innodb_page_size'):
+            resaultdic[u'innodb_page_size']=resault[1]
         elif(resault[0]=='query_cache_size'):
             resaultdic[u'query_cache_size']=resault[1] 
         elif(resault[0]=='table_open_cache'):
@@ -133,8 +135,8 @@ def get_resaultdic():
         if ( is_number(resault[1])):
             resaultdic[resault[0]]=to_int(resault[1])
     
-    resaults2=get_mysql_status(SERVICEHOST,SERVICEPORT,'show engine innodb status;')
-    lines=resaults2[0][2].split("\n")
+    resaults=get_mysql_status(SERVICEHOST,SERVICEPORT,'show engine innodb status;')
+    lines=resaults[0][2].split("\n")
     for line in lines:
         line=line.strip()
         row=' '.join(line.split())
@@ -247,9 +249,10 @@ def get_resaultdic():
             resaultdic[u'ibuf_merges']=to_int(row[5])
         elif(line.find("Hash table size ")==0):
             # In some versions of InnoDB, the used cells is omitted.
-            # Hash table size 4425293, used cells 4229064, ....
             # Hash table size 57374437, node heap has 72964 buffer(s) <-- no used cells
-            resaultdic[u'hash_index_cells_total']=to_int(row[3])
+            resaultdic[u'hash_table_size']=to_int(row[3])
+            if(line.find("node heap has")>0):
+                resaultdic[u'hash_table_memony']=to_int(row[7])*resaultdic[u'innodb_page_size']                
             if(line.find("used cells")>0):
                 resaultdic[u'hash_index_cells_used']=to_int(row[6])
             else:
@@ -295,9 +298,9 @@ def get_resaultdic():
             # Total memory allocated by read views 96
             resaultdic[u'total_mem_alloc']=to_int(row[3])
             resaultdic[u'additional_pool_alloc']=to_int(row[8])
-        elif(line.find("Adaptive hash index ")==0):
-            #   Adaptive hash index 1538240664     (186998824 + 1351241840)
-            resaultdic[u'adaptive_hash_memory']=to_int(row[3])
+        elif(line.find("Adaptive hash index")==0):
+            #Adaptive hash index 19057200        (18921928 + 135272)
+            resaultdic[u'adaptive_hash_memory']=to_int(row[3])          
         elif(line.find("Page hash           ")==0):
             #   Page hash           11688584
             resaultdic[u'page_hash_memory']=to_int(row[2])
@@ -370,7 +373,7 @@ def get_resaultdic():
     """
 
 def writetofile(resaultdic):
-    f1 = open('D:/'+SERVICEHOST+'-'+str(SERVICEPORT)+'-mysql_zabbix_stats.txt', 'w')
+    f1 = open('/tmp/'+SERVICEHOST+'-'+str(SERVICEPORT)+'-mysql_zabbix_stats.txt', 'w')
     for key in resaultdic.keys():
         f1.writelines( ' '+key +':'+ str(resaultdic[key])+'\n')
     
